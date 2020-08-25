@@ -1,0 +1,22 @@
+{
+    "name": "starling/module-taskone",
+    "description": "",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Gabriel Starling",
+            "email": "starling.damasio@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Starling\\TaskOne\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "name": "starling/module-tasktwo",
+    "description": "",
+    "type": "magento2-module",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Gabriel Starling",
+            "email": "starling.damasio@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Starling\\TaskTwo\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}
