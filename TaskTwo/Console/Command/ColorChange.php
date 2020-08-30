@@ -17,17 +17,20 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Config\Storage\WriterInterface;
 
 class ColorChange extends Command
 {
 
     const COLOR_ARGUMENT = "color";
+    const COLOR_CONFIG_PATH = "tasktwo/general/color";
+    const HEX_CODE_REGEX = "/#([a-f0-9]{3}){1,2}\b/i";
 
     /**
      *
      * @param \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
      */
-    public function __construct(\Magento\Framework\App\Config\Storage\WriterInterface $configWriter)
+    public function __construct(WriterInterface $configWriter)
     {
         $this->configWriter = $configWriter;
         parent::__construct();
@@ -42,14 +45,14 @@ class ColorChange extends Command
     ) {
         $color = $input->getArgument(self::COLOR_ARGUMENT);
         if(strlen($color) > 0 && $this->validateColor($color)) {
-            $this->configWriter->save('tasktwo/general/color',  $color, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
+            $this->configWriter->save(self::COLOR_CONFIG_PATH,  $color, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0);
             $output->writeln("New color code is " . $color);
         } else $output->writeln($color . " is not a valid hex code for a color.");
     }
 
     protected function validateColor($colorCode)
     {
-       return preg_match("/#([a-f0-9]{3}){1,2}\b/i", $colorCode) === 1;
+       return preg_match(self::HEX_CODE_REGEX, $colorCode) === 1;
     }
 
     /**
