@@ -3,7 +3,12 @@ declare(strict_types=1);
 
 namespace Starling\TaskOne\Block\SEO;
 
-class Manager extends \Magento\Framework\View\Element\Template
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Cms\Model\Page;
+
+class Manager extends Template
 {
     protected $_storeManager;
 
@@ -14,15 +19,17 @@ class Manager extends \Magento\Framework\View\Element\Template
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        Context $context,
+        StoreManagerInterface $storeManager,
+        Page $cmsPage,
         array $data = []
     ) {
         $this->_storeManager = $storeManager;
+        $this->_cmsPage = $cmsPage;
         parent::__construct($context, $data);
     }
 
-    /**
+    /*
      * @return string
      */
     public function preventDuplicatedSEO()
@@ -30,9 +37,8 @@ class Manager extends \Magento\Framework\View\Element\Template
         $store = $this->_storeManager->getStore();
         $baseUrl = $store->getBaseUrl();
         $storeLanguage = $store->getLocale();
-        $pageId = \Magento\Framework\App\ObjectManager::getInstance()->get('\Magento\Cms\Model\Page')->getIdentifier();
+        $pageId = $this->_cmsPage->getIdentifier();
 
-        $tag = '<link rel="alternate" hreflang="'. $storeLanguage . '" href="' . $baseUrl . $pageId . '">';
-        return $tag;
+        return '<link rel="alternate" hreflang="'. $storeLanguage . '" href="' . $baseUrl . $pageId . '">';
     }
 }
